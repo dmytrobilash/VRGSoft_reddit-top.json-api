@@ -7,21 +7,19 @@
     android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardCornerRadius="15dp"
-    android:layout_margin="15dp">
+    android:layout_margin="15dp"
+    android:backgroundTint="@color/card_color">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginHorizontal="5dp">
+        android:background="@color/card_color">
 
         <TextView
             android:id="@+id/author"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/text_card"
             android:text="Posted by"
-            android:textColor="@android:color/black"
-            android:textSize="17sp"
-            android:layout_marginTop="8dp"
+            android:textSize="15sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -31,12 +29,9 @@
 
         <TextView
             android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            style="@style/text_card"
             android:text="Title of post"
-            android:textColor="@android:color/black"
-            android:textSize="20sp"
+            android:textSize="17sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -49,6 +44,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="16dp"
+            android:src="@drawable/imageholder"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -65,7 +61,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginBottom="15dp"
+            android:layout_marginBottom="16dp"
             android:contentDescription="comment_image"
             android:src="@drawable/ic_baseline_mode_comment_24"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -75,15 +71,15 @@
 
         <TextView
             android:id="@+id/comments_quantity"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/text_card"
             android:text="1123"
-            android:textColor="@color/black"
+            android:textSize="15sp"
             app:layout_constraintBottom_toBottomOf="@+id/comments_icon"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/comments_icon"
-            app:layout_constraintTop_toTopOf="@+id/comments_icon" />
+            app:layout_constraintTop_toTopOf="@+id/comments_icon"
+            app:layout_constraintVertical_bias="1.0" />
 
         <ImageView
             android:id="@+id/download"
