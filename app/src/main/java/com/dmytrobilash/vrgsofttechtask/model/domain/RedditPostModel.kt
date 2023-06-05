@@ -10,8 +10,9 @@ data class RedditPostModel(
     val comQuantity: Int,
     val thumbnail: String,
     @SerializedName("created_utc")
-    val hoursAgo: Long,
-    val url: String
+    val createdTime: Long,
+    val url: String,
+    val name: String
 )
 //response from API
 data class RedditResponse(
@@ -37,8 +38,9 @@ fun RedditPostModel.asModel(): RedditPostModel {
         author = author,
         comQuantity = comQuantity,
         thumbnail = thumbnail,
-        hoursAgo = hoursAgo,
-        url = url
+        createdTime = createdTime,
+        url = url,
+        name = name
     )
 }
 
