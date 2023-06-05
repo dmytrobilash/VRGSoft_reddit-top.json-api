@@ -22,4 +22,13 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/post_item" />
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:padding="8dp"
+        android:background="@color/card_color"
+        android:layout_gravity="center|top"/>
+
 </FrameLayout>
