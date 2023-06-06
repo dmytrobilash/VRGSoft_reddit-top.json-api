@@ -1,5 +1,6 @@
 package com.dmytrobilash.vrgsofttechtask.view
 
+import android.content.pm.PackageManager
 import android.view.LayoutInflater
 import android.os.Bundle
 import androidx.fragment.app.viewModels
@@ -7,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.dmytrobilash.vrgsofttechtask.databinding.FragmentMainBinding
 import com.dmytrobilash.vrgsofttechtask.viewmodel.MainFragmentViewModel
@@ -36,6 +38,19 @@ class MainFragment : Fragment() {
         setupViews()
         setupRecyclerView()
         fetchPosts()
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == Adapter.PERMISSION_REQUEST_CODE) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission granted, retry image download
+                adapter.retryImageDownload()
+            } else {
+                // Permission denied, show a message or handle it as per your requirement
+                Toast.makeText(requireContext(), "Permission denied", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun setupViews() {
