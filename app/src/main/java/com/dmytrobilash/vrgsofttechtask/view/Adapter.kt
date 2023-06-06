@@ -6,7 +6,6 @@ import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Environment
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -45,7 +44,6 @@ class Adapter(private val onPagination: () -> Unit) : RecyclerView.Adapter<Adapt
 
         //when last item the new items loads to the rv
         if (position == posts.size - 1) {
-            Log.v("TagTag", position.toString())
             onPagination.invoke()
         }
     }
@@ -69,9 +67,11 @@ class Adapter(private val onPagination: () -> Unit) : RecyclerView.Adapter<Adapt
                     .load(imageUrl)
                     .into(imageView)
             }
+
             imageView.setOnClickListener {
                 imageView.visibility = View.GONE
             }
+
             binding.download.setOnClickListener {
                 val post = posts[adapterPosition]
 
@@ -86,37 +86,59 @@ class Adapter(private val onPagination: () -> Unit) : RecyclerView.Adapter<Adapt
                         null
                     }
                 }
-                Log.v("TAG", currentImageUrl.toString())
+
                 try {
                     downloadImage(currentImageUrl!!, binding.root.context)
-                }catch (e: Exception){
+                } catch (e: Exception) {
                     (binding.root.context as? Activity)?.runOnUiThread {
-                        Toast.makeText(binding.root.context, "Failed to save image", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            binding.root.context,
+                            binding.root.context.getText(R.string.fail_to_download_image),
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
             }
         }
 
-        //bindong data
+        //binding data
         @SuppressLint("SetTextI18n")
         fun bind(post: RedditPostModel) {
             val context = binding.root.context
             binding.title.text = post.title
-            binding.author.text =
-                context.getString(R.string.posted_by) + " " + post.author + " " + TimeUnit.SECONDS.toHours((Date().time / 1000 - post.createdTime)) + " hours ago"
-            binding.commentsQuantity.text = post.comQuantity.toString() + " " + context.getString(R.string.comments)
-
-            val imageUrl = if (post.url.contains("v.redd.it")) {
-                post.thumbnail.replace("amp;", "")
-            } else {
-                post.url
+            val hoursAgo = TimeUnit.SECONDS.toHours((Date().time / 1000 - post.createdTime))
+            val timeUnitString = when {
+                hoursAgo in 0L..1L -> context.getString(R.string.hour_ago)
+                hoursAgo < 24L -> context.getString(R.string.hours_ago)
+                hoursAgo in 24L..47 -> context.getString(R.string.day_ago)
+                else -> context.getString(R.string.days_ago)
             }
+            val numComment = when (post.comQuantity) {
+                1 -> context.getString(R.string.comment)
+                else -> context.getString(R.string.comments)
+            }
+            binding.author.text =
+                context.getString(R.string.posted_by) + " " + post.author + " " + hoursAgo + " " + timeUnitString
+            binding.commentsQuantity.text = post.comQuantity.toString() + " " + numComment
 
-            Glide.with(binding.root)
-                .load(imageUrl)
-                .placeholder(R.drawable.imageholder)
-                .diskCacheStrategy(DiskCacheStrategy.DATA)
-                .into(binding.image)
+            val imageUrl = when {
+                post.url.contains("v.redd.it") -> {
+                    post.thumbnail.replace("amp;", "")
+                }
+                post.url.contains("i.redd.it") -> {
+                    post.url
+                }
+                else -> {
+                    null
+                }
+            }
+            if (imageUrl != null) {
+                Glide.with(binding.root)
+                    .load(imageUrl)
+                    .placeholder(R.drawable.imageholder)
+                    .diskCacheStrategy(DiskCacheStrategy.DATA)
+                    .into(binding.image)
+            }
         }
     }
 
@@ -125,6 +147,7 @@ class Adapter(private val onPagination: () -> Unit) : RecyclerView.Adapter<Adapt
     }
 
     private fun downloadImage(imageUrl: String, context: Context) {
+
         //check the required permissions are granted
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             //request the permission
@@ -176,12 +199,12 @@ class Adapter(private val onPagination: () -> Unit) : RecyclerView.Adapter<Adapt
             try {
                 it.copyTo(destinationFile, overwrite = true)
                 (context as? Activity)?.runOnUiThread {
-                    Toast.makeText(context, "Image saved to Downloads", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, context.getString(R.string.success_to_download_image), Toast.LENGTH_SHORT).show()
                 }
             } catch (e: IOException) {
                 e.printStackTrace()
                 (context as? Activity)?.runOnUiThread {
-                    Toast.makeText(context, "Failed to save image", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, context.getString(R.string.fail_to_download_image), Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -189,7 +212,7 @@ class Adapter(private val onPagination: () -> Unit) : RecyclerView.Adapter<Adapt
 
     fun retryImageDownload() {
         val post = posts.find { post -> post.url == currentImageUrl }
-        post?.let { currentImageUrl?.let { it -> downloadImage(it, imageView.context) } }
+        post?.let { currentImageUrl?.let {it -> downloadImage(it, imageView.context) } }
     }
 
     fun setImage(image: ImageView) {

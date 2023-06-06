@@ -7,4 +7,7 @@
     <string name="day_ago">day ago</string>
     <string name="days_ago">days ago</string>
     <string name="comments">comments</string>
+    <string name="comment">comment</string>
+    <string name="fail_to_download_image">Failed to save image</string>
+    <string name="success_to_download_image">Image saved to Downloads</string>
 </resources>
