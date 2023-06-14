@@ -21,7 +21,7 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.dmytrobilash.vrgsofttechtask.R
 import com.dmytrobilash.vrgsofttechtask.databinding.PostItemBinding
-import com.dmytrobilash.vrgsofttechtask.model.domain.RedditPostModel
+import com.dmytrobilash.vrgsofttechtask.model.data.RedditPostModel
 import java.io.File
 import java.io.IOException
 import java.util.*

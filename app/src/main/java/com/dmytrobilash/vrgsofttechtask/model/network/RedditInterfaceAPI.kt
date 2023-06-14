@@ -1,6 +1,6 @@
 package com.dmytrobilash.vrgsofttechtask.model.network
 
-import com.dmytrobilash.vrgsofttechtask.model.domain.RedditResponse
+import com.dmytrobilash.vrgsofttechtask.model.data.RedditResponse
 
 import retrofit2.http.GET
 import retrofit2.http.Query

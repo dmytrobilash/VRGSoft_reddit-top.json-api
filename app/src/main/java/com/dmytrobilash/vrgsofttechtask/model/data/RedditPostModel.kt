@@ -1,4 +1,4 @@
-package com.dmytrobilash.vrgsofttechtask.model.domain
+package com.dmytrobilash.vrgsofttechtask.model.data
 
 import com.google.gson.annotations.SerializedName
 

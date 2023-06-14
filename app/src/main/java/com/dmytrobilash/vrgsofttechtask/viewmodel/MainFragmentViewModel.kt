@@ -3,15 +3,14 @@ package com.dmytrobilash.vrgsofttechtask.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.dmytrobilash.vrgsofttechtask.model.domain.RedditPostModel
-import com.dmytrobilash.vrgsofttechtask.model.domain.asModel
-import com.dmytrobilash.vrgsofttechtask.model.network.RedditImplAPI
+import com.dmytrobilash.vrgsofttechtask.model.data.RedditPostModel
 import androidx.lifecycle.viewModelScope
+import com.dmytrobilash.vrgsofttechtask.model.domain.RedditRepositoryIF
 import kotlinx.coroutines.launch
 
-class MainFragmentViewModel : ViewModel() {
+class MainFragmentViewModel(private val redditRepository: RedditRepositoryIF) : ViewModel() {
 
-    private val reddit = RedditImplAPI().redditService
+
     private val _posts = MutableLiveData<List<RedditPostModel>>()
     val posts: LiveData<List<RedditPostModel>> = _posts
 
@@ -23,28 +22,21 @@ class MainFragmentViewModel : ViewModel() {
     private fun fetchPosts() {
         viewModelScope.launch {
             try {
-                val response = reddit.getTopPosts()
-                val posts = response.data.children.map {
-                    it.data.asModel()
-                }
+                val posts = redditRepository.getTopPosts()
                 _posts.value = posts
             } catch (e: Exception) {
-
+                // Handle the exception
             }
         }
     }
 
-    //get pagination posts
     fun fetchPostsForPagination(limit: Int, after: String) {
         viewModelScope.launch {
             try {
-                val response = reddit.getTopPostForPagination(limit, after)
-                val posts = response.data.children.map {
-                    it.data.asModel()
-                }
-                _posts.value = _posts.value?.plus(posts) //old items + new items from this response
+                val posts = redditRepository.getTopPostsForPagination(limit, after)
+                _posts.value = _posts.value?.plus(posts)
             } catch (e: Exception) {
-
+                // Handle the exception
             }
         }
     }

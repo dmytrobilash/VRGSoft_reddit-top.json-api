@@ -12,11 +12,12 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.dmytrobilash.vrgsofttechtask.databinding.FragmentMainBinding
 import com.dmytrobilash.vrgsofttechtask.viewmodel.MainFragmentViewModel
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 
 class MainFragment : Fragment() {
 
-    private val viewModel: MainFragmentViewModel by viewModels()
+    private val viewModel: MainFragmentViewModel by sharedViewModel()
     private lateinit var binding: FragmentMainBinding
     private lateinit var adapter: Adapter
     private lateinit var progressBar: ProgressBar
