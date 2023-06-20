@@ -13,3 +13,33 @@ data class RedditPostModel(
     val url: String,
     val name: String
 )
+
+//response from API
+data class RedditResponse(
+    val kind: String,
+    val data: RedditData
+)
+
+//sections of Reddit response
+data class RedditData(
+    val children: List<RedditChild>
+)
+
+//child items in data section
+data class RedditChild(
+    val kind: String,
+    val data: RedditPostModel
+)
+
+//transformation
+fun RedditPostModel.asModel(): RedditPostModel {
+    return RedditPostModel(
+        title = title,
+        author = author,
+        comQuantity = comQuantity,
+        thumbnail = thumbnail,
+        createdTime = createdTime,
+        url = url,
+        name = name
+    )
+}

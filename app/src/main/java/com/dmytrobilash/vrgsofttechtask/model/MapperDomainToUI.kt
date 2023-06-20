@@ -1,13 +1,11 @@
-package com.dmytrobilash.data.mapper
+package com.dmytrobilash.vrgsofttechtask.model
 
-import com.dmytrobilash.data.network.model.RedditPostModel
 import com.dmytrobilash.domain.model.PostModel
 
-object MapperResponse {
-
-    fun toPostModel(list: List<RedditPostModel>): List<PostModel> =
+object MapperDomainToUI {
+    fun toPostUIModel(list: List<PostModel>): List<RedditPostUIModel> =
         list.map {
-            PostModel(
+            RedditPostUIModel(
                 it.name,
                 it.author,
                 it.comQuantity,
@@ -17,5 +15,4 @@ object MapperResponse {
                 it.title
             )
         }
-
 }

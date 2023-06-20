@@ -1,4 +1,4 @@
-package com.dmytrobilash.vrgsofttechtask.view
+package com.dmytrobilash.vrgsofttechtask.adapter
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -21,7 +21,7 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.dmytrobilash.vrgsofttechtask.R
 import com.dmytrobilash.vrgsofttechtask.databinding.PostItemBinding
-import com.dmytrobilash.vrgsofttechtask.model.data.RedditPostModel
+import com.dmytrobilash.vrgsofttechtask.model.RedditPostUIModel
 import java.io.File
 import java.io.IOException
 import java.util.*
@@ -29,7 +29,7 @@ import java.util.concurrent.TimeUnit
 
 class Adapter(private val onPagination: () -> Unit) : RecyclerView.Adapter<Adapter.PostViewHolder>() {
 
-    private var posts = emptyList<RedditPostModel>()
+    private var posts = emptyList<RedditPostUIModel>()
     private lateinit var imageView: ImageView
     private var currentImageUrl: String? = null
 
@@ -103,7 +103,7 @@ class Adapter(private val onPagination: () -> Unit) : RecyclerView.Adapter<Adapt
 
         //binding data
         @SuppressLint("SetTextI18n")
-        fun bind(post: RedditPostModel) {
+        fun bind(post: RedditPostUIModel) {
             val context = binding.root.context
             binding.title.text = post.title
             val hoursAgo = TimeUnit.SECONDS.toHours((Date().time / 1000 - post.createdTime))
@@ -220,7 +220,7 @@ class Adapter(private val onPagination: () -> Unit) : RecyclerView.Adapter<Adapt
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setList(list: List<RedditPostModel>) {
+    fun setList(list: List<RedditPostUIModel>) {
         posts = list
         notifyDataSetChanged()
     }

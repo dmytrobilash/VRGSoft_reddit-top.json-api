@@ -1,18 +1,19 @@
 package com.dmytrobilash.vrgsofttechtask.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.dmytrobilash.vrgsofttechtask.model.data.RedditPostModel
 import androidx.lifecycle.viewModelScope
-import com.dmytrobilash.vrgsofttechtask.model.domain.RedditRepositoryIF
+import com.dmytrobilash.vrgsofttechtask.model.RedditPostUIModel
+import com.dmytrobilash.domain.usecases.GetPostsListUseCase
+import com.dmytrobilash.vrgsofttechtask.model.MapperDomainToUI
 import kotlinx.coroutines.launch
 
-class MainFragmentViewModel(private val redditRepository: RedditRepositoryIF) : ViewModel() {
+class MainFragmentViewModel (private val getPostsUseCase: GetPostsListUseCase) : ViewModel() {
 
-
-    private val _posts = MutableLiveData<List<RedditPostModel>>()
-    val posts: LiveData<List<RedditPostModel>> = _posts
+    private val _posts = MutableLiveData<List<RedditPostUIModel>>()
+    val posts: LiveData<List<RedditPostUIModel>> = _posts
 
     init {
         fetchPosts()
@@ -20,12 +21,15 @@ class MainFragmentViewModel(private val redditRepository: RedditRepositoryIF) : 
 
     //get starter posts(25 items)
     private fun fetchPosts() {
+        Log.v("MAPPERMODEL", "MAPPERMODEL")
         viewModelScope.launch {
             try {
-                val posts = redditRepository.getTopPosts()
-                _posts.value = posts
+                val posts = getPostsUseCase.execute()
+                Log.v("MAPPERMODEL", posts.toString())
+                _posts.value = MapperDomainToUI.toPostUIModel(posts)
             } catch (e: Exception) {
-                // Handle the exception
+                e.printStackTrace() //shiza progresiruet
+                Log.e("IO", "IO$e");
             }
         }
     }
@@ -33,10 +37,11 @@ class MainFragmentViewModel(private val redditRepository: RedditRepositoryIF) : 
     fun fetchPostsForPagination(limit: Int, after: String) {
         viewModelScope.launch {
             try {
-                val posts = redditRepository.getTopPostsForPagination(limit, after)
-                _posts.value = _posts.value?.plus(posts)
+                val posts = getPostsUseCase.execute(limit, after)
+                _posts.value = _posts.value?.plus(MapperDomainToUI.toPostUIModel(posts))
             } catch (e: Exception) {
-                // Handle the exception
+                e.printStackTrace() //shiza progresiruet
+                Log.e("IO", "IO$e");
             }
         }
     }

@@ -3,21 +3,21 @@ package com.dmytrobilash.vrgsofttechtask.view
 import android.content.pm.PackageManager
 import android.view.LayoutInflater
 import android.os.Bundle
-import androidx.fragment.app.viewModels
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import com.dmytrobilash.vrgsofttechtask.adapter.Adapter
 import com.dmytrobilash.vrgsofttechtask.databinding.FragmentMainBinding
 import com.dmytrobilash.vrgsofttechtask.viewmodel.MainFragmentViewModel
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
-
+import com.dmytrobilash.vrgsofttechtask.viewmodel.MainFragmentViewModelFactory
 
 class MainFragment : Fragment() {
 
-    private val viewModel: MainFragmentViewModel by sharedViewModel()
+    private val viewModel by viewModels<MainFragmentViewModel> { MainFragmentViewModelFactory() }
     private lateinit var binding: FragmentMainBinding
     private lateinit var adapter: Adapter
     private lateinit var progressBar: ProgressBar
