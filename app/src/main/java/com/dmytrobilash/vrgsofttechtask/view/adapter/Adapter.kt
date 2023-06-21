@@ -43,7 +43,7 @@ class Adapter(private val onPagination: () -> Unit) : RecyclerView.Adapter<Adapt
         holder.bind(posts[position])
 
         //when last item the new items loads to the rv
-        if (position == posts.size - 1) {
+        if (position == posts.size-1) {
             onPagination.invoke()
         }
     }
@@ -55,17 +55,36 @@ class Adapter(private val onPagination: () -> Unit) : RecyclerView.Adapter<Adapt
     //holder class to hold the views of each item in the RecyclerView
     inner class PostViewHolder(private val binding: PostItemBinding) : RecyclerView.ViewHolder(binding.root) {
         init {
+
+            //image post click
             binding.image.setOnClickListener {
-                val imageUrl = if (posts[adapterPosition].url.contains("v.redd.it")) {
-                    posts[adapterPosition].thumbnail.replace("amp;", "")
-                } else {
-                    posts[adapterPosition].url
+                val imageUrl: String? = when {
+                    posts[adapterPosition].url.contains("v.redd.it") -> {
+                        posts[adapterPosition].thumbnail.replace("amp;", "")
+                    }
+
+                    posts[adapterPosition].url.contains("i.redd.it") -> {
+                        posts[adapterPosition].url
+                    }
+                    else -> {
+                        null
+                    }
                 }
+                //image bigger click
                 imageView.visibility = View.VISIBLE
 
-                Glide.with(binding.root)
-                    .load(imageUrl)
-                    .into(imageView)
+                //loading pictures
+                if (imageUrl != null) {
+                    Glide.with(binding.root)
+                        .load(imageUrl)
+                        .into(imageView)
+                } else {
+                    Glide.with(binding.root)
+                        .load("")
+                        .placeholder(R.drawable.imageholder)
+                        .into(imageView)
+                    binding.image.setImageResource(R.drawable.imageholder)
+                }
             }
 
             imageView.setOnClickListener {
@@ -104,6 +123,11 @@ class Adapter(private val onPagination: () -> Unit) : RecyclerView.Adapter<Adapt
         //binding data
         @SuppressLint("SetTextI18n")
         fun bind(post: RedditPostUIModel) {
+
+            //clear glide to avoid the duplication of images in rv
+            Glide.with(binding.root)
+                .clear(binding.image)
+
             val context = binding.root.context
             binding.title.text = post.title
             val hoursAgo = TimeUnit.SECONDS.toHours((Date().time / 1000 - post.createdTime))
@@ -121,15 +145,18 @@ class Adapter(private val onPagination: () -> Unit) : RecyclerView.Adapter<Adapt
                 context.getString(R.string.posted_by) + " " + post.author + " " + hoursAgo + " " + timeUnitString
             binding.commentsQuantity.text = post.comQuantity.toString() + " " + numComment
 
+
             val imageUrl = when {
                 post.url.contains("v.redd.it") -> {
-                    post.thumbnail.replace("amp;", "")
+                    post.thumbnail.replace("amp;", "") //get thumbnail of image
                 }
+
                 post.url.contains("i.redd.it") -> {
-                    post.url
+                    post.url //get image url
                 }
+
                 else -> {
-                    null
+                    null //if there is not the thumbnail or image -> url is null
                 }
             }
             if (imageUrl != null) {
@@ -137,6 +164,7 @@ class Adapter(private val onPagination: () -> Unit) : RecyclerView.Adapter<Adapt
                     .load(imageUrl)
                     .placeholder(R.drawable.imageholder)
                     .diskCacheStrategy(DiskCacheStrategy.DATA)
+                    .dontAnimate()
                     .into(binding.image)
             }
         }
