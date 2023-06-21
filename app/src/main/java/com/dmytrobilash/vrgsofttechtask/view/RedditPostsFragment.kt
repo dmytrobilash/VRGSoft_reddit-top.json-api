@@ -11,14 +11,19 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.dmytrobilash.vrgsofttechtask.R
-import com.dmytrobilash.vrgsofttechtask.adapter.Adapter
+import com.dmytrobilash.vrgsofttechtask.view.adapter.Adapter
 import com.dmytrobilash.vrgsofttechtask.databinding.FragmentMainBinding
+import com.dmytrobilash.vrgsofttechtask.di.App
 import com.dmytrobilash.vrgsofttechtask.viewmodel.RedditPostsViewModel
 import com.dmytrobilash.vrgsofttechtask.viewmodel.RedditPostsViewModelFactory
+import javax.inject.Inject
 
 class RedditPostsFragment : Fragment() {
 
-    private val viewModel by viewModels<RedditPostsViewModel> { RedditPostsViewModelFactory() }
+    @Inject
+    lateinit var vmFactory: RedditPostsViewModelFactory
+
+    private val viewModel by viewModels<RedditPostsViewModel> {vmFactory}
     private lateinit var binding: FragmentMainBinding
     private lateinit var adapter: Adapter
     private lateinit var progressBar: ProgressBar
@@ -31,6 +36,7 @@ class RedditPostsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        (requireActivity().applicationContext as App).appComponent.inject(this)
         binding = FragmentMainBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -80,4 +86,5 @@ class RedditPostsFragment : Fragment() {
         after = adapter.getAfter()
         viewModel.fetchPostsForPagination(limit = 5, after = after!!)
     }
+
 }

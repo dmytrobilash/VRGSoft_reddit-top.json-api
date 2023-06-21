@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dmytrobilash.vrgsofttechtask.model.RedditPostUIModel
 import com.dmytrobilash.domain.usecases.GetPostsListUseCase
-import com.dmytrobilash.vrgsofttechtask.mapper.MapperDomainToUI
+import com.dmytrobilash.vrgsofttechtask.model.mapper.MapperDomainToUI
 import kotlinx.coroutines.launch
 
 class RedditPostsViewModel (private val getPostsUseCase: GetPostsListUseCase) : ViewModel() {

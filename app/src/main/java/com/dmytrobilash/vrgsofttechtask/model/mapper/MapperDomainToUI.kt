@@ -1,4 +1,4 @@
-package com.dmytrobilash.vrgsofttechtask.mapper
+package com.dmytrobilash.vrgsofttechtask.model.mapper
 
 import com.dmytrobilash.domain.model.RedditPostModelDomain
 import com.dmytrobilash.vrgsofttechtask.model.RedditPostUIModel

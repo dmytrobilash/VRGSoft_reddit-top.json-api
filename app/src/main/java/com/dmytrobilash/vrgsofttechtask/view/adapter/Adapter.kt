@@ -1,4 +1,4 @@
-package com.dmytrobilash.vrgsofttechtask.adapter
+package com.dmytrobilash.vrgsofttechtask.view.adapter
 
 import android.Manifest
 import android.annotation.SuppressLint

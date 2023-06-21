@@ -3,16 +3,12 @@ package com.dmytrobilash.vrgsofttechtask.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.dmytrobilash.data.repository.DataRepositoryImpl
-import com.dmytrobilash.data.network.api.RedditRetrofitBuilder
 import com.dmytrobilash.domain.usecases.GetPostsListUseCase
+import javax.inject.Inject
 
 
+class RedditPostsViewModelFactory @Inject constructor(private val getPostsListUseCase: GetPostsListUseCase): ViewModelProvider.Factory {
 
-class RedditPostsViewModelFactory : ViewModelProvider.Factory {
-
-    private val repository = DataRepositoryImpl(RedditRetrofitBuilder().redditService)
-    private val getPostsListUseCase = GetPostsListUseCase(repository)
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return RedditPostsViewModel(
             getPostsListUseCase
