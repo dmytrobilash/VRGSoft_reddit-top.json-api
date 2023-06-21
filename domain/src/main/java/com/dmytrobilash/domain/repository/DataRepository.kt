@@ -1,8 +1,8 @@
 package com.dmytrobilash.domain.repository
 
-import com.dmytrobilash.domain.model.PostModel
+import com.dmytrobilash.domain.model.RedditPostModelDomain
 
 interface DataRepository {
-    suspend fun getAllTopPost(): List<PostModel>
-    suspend fun getTopPostPagination(limit: Int, after: String): List<PostModel>
+    suspend fun getAllTopPost(): List<RedditPostModelDomain>
+    suspend fun getTopPostPagination(limit: Int, after: String): List<RedditPostModelDomain>
 }

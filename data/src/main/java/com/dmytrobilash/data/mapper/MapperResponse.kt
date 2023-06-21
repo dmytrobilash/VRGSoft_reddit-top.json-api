@@ -1,13 +1,13 @@
 package com.dmytrobilash.data.mapper
 
 import com.dmytrobilash.data.network.model.RedditPostModel
-import com.dmytrobilash.domain.model.PostModel
+import com.dmytrobilash.domain.model.RedditPostModelDomain
 
 object MapperResponse {
 
-    fun toPostModel(list: List<RedditPostModel>): List<PostModel> =
+    fun toPostModel(list: List<RedditPostModel>): List<RedditPostModelDomain> =
         list.map {
-            PostModel(
+            RedditPostModelDomain(
                 it.name,
                 it.author,
                 it.comQuantity,

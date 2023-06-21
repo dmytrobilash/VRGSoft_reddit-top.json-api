@@ -7,10 +7,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dmytrobilash.vrgsofttechtask.model.RedditPostUIModel
 import com.dmytrobilash.domain.usecases.GetPostsListUseCase
-import com.dmytrobilash.vrgsofttechtask.model.MapperDomainToUI
+import com.dmytrobilash.vrgsofttechtask.mapper.MapperDomainToUI
 import kotlinx.coroutines.launch
 
-class MainFragmentViewModel (private val getPostsUseCase: GetPostsListUseCase) : ViewModel() {
+class RedditPostsViewModel (private val getPostsUseCase: GetPostsListUseCase) : ViewModel() {
 
     private val _posts = MutableLiveData<List<RedditPostUIModel>>()
     val posts: LiveData<List<RedditPostUIModel>> = _posts
@@ -29,7 +29,7 @@ class MainFragmentViewModel (private val getPostsUseCase: GetPostsListUseCase) :
                 _posts.value = MapperDomainToUI.toPostUIModel(posts)
             } catch (e: Exception) {
                 e.printStackTrace() //shiza progresiruet
-                Log.e("IO", "IO$e");
+                Log.e("IO", "IO$e")
             }
         }
     }
@@ -41,7 +41,7 @@ class MainFragmentViewModel (private val getPostsUseCase: GetPostsListUseCase) :
                 _posts.value = _posts.value?.plus(MapperDomainToUI.toPostUIModel(posts))
             } catch (e: Exception) {
                 e.printStackTrace() //shiza progresiruet
-                Log.e("IO", "IO$e");
+                Log.e("IO", "IO$e")
             }
         }
     }

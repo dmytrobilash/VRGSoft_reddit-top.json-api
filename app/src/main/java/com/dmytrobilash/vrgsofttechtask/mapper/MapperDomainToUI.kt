@@ -1,9 +1,10 @@
-package com.dmytrobilash.vrgsofttechtask.model
+package com.dmytrobilash.vrgsofttechtask.mapper
 
-import com.dmytrobilash.domain.model.PostModel
+import com.dmytrobilash.domain.model.RedditPostModelDomain
+import com.dmytrobilash.vrgsofttechtask.model.RedditPostUIModel
 
 object MapperDomainToUI {
-    fun toPostUIModel(list: List<PostModel>): List<RedditPostUIModel> =
+    fun toPostUIModel(list: List<RedditPostModelDomain>): List<RedditPostUIModel> =
         list.map {
             RedditPostUIModel(
                 it.name,

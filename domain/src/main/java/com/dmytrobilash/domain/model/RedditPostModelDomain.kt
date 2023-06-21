@@ -1,6 +1,6 @@
 package com.dmytrobilash.domain.model
 
-data class PostModel(
+data class RedditPostModelDomain(
     val title: String,
     val author: String,
     val comQuantity: Int,

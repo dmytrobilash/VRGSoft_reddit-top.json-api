@@ -10,14 +10,15 @@ import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.dmytrobilash.vrgsofttechtask.R
 import com.dmytrobilash.vrgsofttechtask.adapter.Adapter
 import com.dmytrobilash.vrgsofttechtask.databinding.FragmentMainBinding
-import com.dmytrobilash.vrgsofttechtask.viewmodel.MainFragmentViewModel
-import com.dmytrobilash.vrgsofttechtask.viewmodel.MainFragmentViewModelFactory
+import com.dmytrobilash.vrgsofttechtask.viewmodel.RedditPostsViewModel
+import com.dmytrobilash.vrgsofttechtask.viewmodel.RedditPostsViewModelFactory
 
-class MainFragment : Fragment() {
+class RedditPostsFragment : Fragment() {
 
-    private val viewModel by viewModels<MainFragmentViewModel> { MainFragmentViewModelFactory() }
+    private val viewModel by viewModels<RedditPostsViewModel> { RedditPostsViewModelFactory() }
     private lateinit var binding: FragmentMainBinding
     private lateinit var adapter: Adapter
     private lateinit var progressBar: ProgressBar
@@ -49,7 +50,7 @@ class MainFragment : Fragment() {
                 adapter.retryImageDownload()
             } else {
                 // Permission denied, show a message or handle it as per your requirement
-                Toast.makeText(requireContext(), "Permission denied", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), binding.root.context.getText(R.string.permission_denied), Toast.LENGTH_SHORT).show()
             }
         }
     }

@@ -9,12 +9,12 @@ import com.dmytrobilash.domain.usecases.GetPostsListUseCase
 
 
 
-class MainFragmentViewModelFactory : ViewModelProvider.Factory {
+class RedditPostsViewModelFactory : ViewModelProvider.Factory {
 
     private val repository = DataRepositoryImpl(RedditRetrofitBuilder().redditService)
     private val getPostsListUseCase = GetPostsListUseCase(repository)
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return MainFragmentViewModel(
+        return RedditPostsViewModel(
             getPostsListUseCase
         ) as T
     }
