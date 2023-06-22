@@ -6,6 +6,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Environment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -41,7 +42,6 @@ class Adapter(private val onPagination: () -> Unit) : RecyclerView.Adapter<Adapt
 
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
         holder.bind(posts[position])
-
         //when last item the new items loads to the rv
         if (position == posts.size-1) {
             onPagination.invoke()
@@ -83,7 +83,6 @@ class Adapter(private val onPagination: () -> Unit) : RecyclerView.Adapter<Adapt
                         .load("")
                         .placeholder(R.drawable.imageholder)
                         .into(imageView)
-                    binding.image.setImageResource(R.drawable.imageholder)
                 }
             }
 
@@ -120,6 +119,7 @@ class Adapter(private val onPagination: () -> Unit) : RecyclerView.Adapter<Adapt
             }
         }
 
+
         //binding data
         @SuppressLint("SetTextI18n")
         fun bind(post: RedditPostUIModel) {
@@ -145,28 +145,24 @@ class Adapter(private val onPagination: () -> Unit) : RecyclerView.Adapter<Adapt
                 context.getString(R.string.posted_by) + " " + post.author + " " + hoursAgo + " " + timeUnitString
             binding.commentsQuantity.text = post.comQuantity.toString() + " " + numComment
 
-
-            val imageUrl = when {
-                post.url.contains("v.redd.it") -> {
-                    post.thumbnail.replace("amp;", "") //get thumbnail of image
-                }
-
-                post.url.contains("i.redd.it") -> {
-                    post.url //get image url
-                }
-
-                else -> {
-                    null //if there is not the thumbnail or image -> url is null
-                }
-            }
-            if (imageUrl != null) {
+            val url =  post.thumbnail.replace("amp;", "")
+            Log.v("IMAGEURL",  url)
+            if(url.contains("https://")) {
                 Glide.with(binding.root)
-                    .load(imageUrl)
+                    .load(url)
                     .placeholder(R.drawable.imageholder)
+                    .override(800, 800)
                     .diskCacheStrategy(DiskCacheStrategy.DATA)
-                    .dontAnimate()
                     .into(binding.image)
             }
+            /*
+            I spend a lot of time for fixing problem on the 151 line
+            So there was a problem when onPagination.invoke images on rv their size were changed
+            I try change all structure of my code but it did not solve my problem
+            The solution was so close to me. It was necessary to add override to glide
+            it takes more than 6 hours to find and code the solution on 2023 June 22
+            todo clear code
+            */
         }
     }
 

@@ -21,11 +21,9 @@ class RedditPostsViewModel (private val getPostsUseCase: GetPostsListUseCase) : 
 
     //get starter posts(25 items)
     private fun fetchPosts() {
-        Log.v("MAPPERMODEL", "MAPPERMODEL")
         viewModelScope.launch {
             try {
                 val posts = getPostsUseCase.execute()
-                Log.v("MAPPERMODEL", posts.toString())
                 _posts.value = MapperDomainToUI.toPostUIModel(posts)
             } catch (e: Exception) {
                 e.printStackTrace() //shiza progresiruet
